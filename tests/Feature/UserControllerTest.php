@@ -21,4 +21,9 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson($user->toArray());
     }
+
+    public function test_findAll_users():void
+    {
+
+    }
 }
