@@ -24,6 +24,6 @@ class UserControllerTest extends TestCase
 
     public function test_findAll_users():void
     {
-
+        // code
     }
 }
