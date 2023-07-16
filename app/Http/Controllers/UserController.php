@@ -7,6 +7,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -53,6 +54,17 @@ class UserController extends Controller
             ]);
             return response()->json($user, 200);
         } catch (ModelNotFoundException $e) {
+            throw new UserNotFoundException($id);
+        }
+    }
+
+    public function deleteUser(int $id)
+    {
+        try{
+            $user = User::findOrFail($id);
+            $user->delete();
+            return response('User with id ' . $id . ' deleted successfully.', 200);
+        } catch (ModelNotFoundException){
             throw new UserNotFoundException($id);
         }
     }

@@ -69,4 +69,14 @@ class UserControllerTest extends TestCase
         self::assertEquals($response['name'], 'test1 updated');
         self::assertEquals($response['email'], 'updatedEmail@gmail.com');
     }
+
+    public function test_delete_user(): void
+    {
+        $response = $this->delete("api/user/{$this->user1->id}");
+        $response->assertStatus(200);
+        $response->assertContent('User with id '. $this->user1->id .' deleted successfully.');
+        $reponseUserDelete = $this->get("api/user/id/{$this->user1->id}");
+        $reponseUserDelete->assertStatus(404);
+
+    }
 }
