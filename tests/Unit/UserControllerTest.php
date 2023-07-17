@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\UserNameNotFoundException;
+use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -41,12 +43,26 @@ class UserControllerTest extends TestCase
         self::assertEquals($response['name'], 'test');
     }
 
+    public function test_find_user_for_id_fail_return_exception(): void
+    {
+        $response = $this->get("/api/user/id/190");
+        $response->assertStatus(404)->assertSee("User with ID 190 not found.");
+        $this->assertTrue($response->exception instanceof UserNotFoundException);
+    }
+
     public function test_find_user_by_name(): void
     {
         $response = $this->get("/api/user/name/{$this->user2->name}");
         $response->assertStatus(200);
         self::assertEquals($response['name'], 'test2');
         self::assertEquals($response['email'], 'userTest2@gmail.com');
+    }
+
+    public function test_find_user_for_name_fail_return_exception(): void
+    {
+        $reponse = $this->get("/api/user/name/pacopaquito");
+        $reponse->assertStatus(404)->assertSee('The user: pacopaquito doesnt exist.');
+        $this->assertTrue($reponse->exception instanceof UserNameNotFoundException);
     }
 
     public function test_findAll_users(): void
@@ -77,6 +93,5 @@ class UserControllerTest extends TestCase
         $response->assertContent('User with id '. $this->user1->id .' deleted successfully.');
         $reponseUserDelete = $this->get("api/user/id/{$this->user1->id}");
         $reponseUserDelete->assertStatus(404);
-
     }
 }

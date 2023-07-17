@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UserNameNotFoundException;
 use App\Exceptions\UserNotFoundException;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatedRequest;
@@ -26,12 +27,11 @@ class UserController extends Controller
 
     public function findUserByUsername(string $name): JsonResponse
     {
-        try{
-            $user = User::where('name', $name)->first();
-            return response()->json($user,200);
-        } catch(ModelNotFoundException $e) {
-            return abort(404);
+        $user = User::where('name', $name)->first();
+        if($user){
+            return response()->json($user, 200);
         }
+        throw new UserNameNotFoundException($name);
     }
 
     public function findAllUsers(): JsonResponse
