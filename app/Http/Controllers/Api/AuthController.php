@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,10 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password'=>Hash::make($request['password'])
+        ]);
+
+        Profile::create([
+            'user_id'=>$user->id
         ]);
 
         return response()->json([
