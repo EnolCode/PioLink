@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProfileNotFoundException;
 use App\Models\Profile;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -10,18 +14,16 @@ class ProfileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function findProfileById(int $id): JsonResponse
     {
-        //
+        try {
+            $profile = Profile::findOrFail($id);
+            return response()->json($profile, 200);
+        } catch (ModelNotFoundException $e) {
+            throw new ProfileNotFoundException($id);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
