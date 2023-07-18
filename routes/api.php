@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,4 +17,5 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('logout', [AuthController::class, 'logout']);
     Route::put('user/{id}', [UserController::class, 'updatedUser']);
     Route::delete('user/{id}', [UserController::class, 'deleteUser']);
+    Route::get('profile/{id}', [ProfileController::class, 'findProfileById']);
 });
