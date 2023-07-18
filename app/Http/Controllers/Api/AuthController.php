@@ -28,6 +28,7 @@ class AuthController extends Controller
         ]);
 
         Profile::create([
+            'id' => $user->id,
             'user_id'=>$user->id
         ]);
 

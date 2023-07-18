@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\UserNameNotFoundException;
 use App\Exceptions\UserNotFoundException;
-use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\TryCatch;
 class UserController extends Controller
 {
     public function findUserById(int $id): JsonResponse
