@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ProfileNotFoundException;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,25 +29,36 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function findAllProfiles(): JsonResponse
     {
-        //
+        try{
+            $profiles = Profile::all();
+            return response()->json($profiles, 200);
+        } catch(Exception $e) {
+            return abort(404);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Profile $profile)
+    public function updateProfile(int $id, ProfileUpdateRequest $request): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Profile $profile)
-    {
-        //
+        try{
+            $profile = Profile::findOrFail($id);
+            $profile->update(([
+                'name' => $request->name,
+                'lastname' => $request->lastname,
+                'location' => $request->location,
+                'isBanned' => $request->isBanned,
+                'age' => $request->age,
+                'longDescription' => $request->longDescription,
+                'shortDescription' => $request->shortDescription,
+                'avatarImage' => $request->avatarImage,
+                'backgroundImage' => $request->backgroundImage,
+                'linkedin' => $request->linkedin,
+            ]));
+            return response()->json(['profile' => $profile, 'message' => 'Profile updated successfully'], 200);
+        } catch (ModelNotFoundException $e){
+            throw new ProfileNotFoundException($id);
+        }
     }
 
     /**
