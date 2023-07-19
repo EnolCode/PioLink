@@ -43,18 +43,7 @@ class ProfileController extends Controller
     {
         try{
             $profile = Profile::findOrFail($id);
-            $profile->update(([
-                'name' => $request->name,
-                'lastname' => $request->lastname,
-                'location' => $request->location,
-                'isBanned' => $request->isBanned,
-                'age' => $request->age,
-                'longDescription' => $request->longDescription,
-                'shortDescription' => $request->shortDescription,
-                'avatarImage' => $request->avatarImage,
-                'backgroundImage' => $request->backgroundImage,
-                'linkedin' => $request->linkedin,
-            ]));
+            $profile->update($request->all());
             return response()->json(['profile' => $profile, 'message' => 'Profile updated successfully'], 200);
         } catch (ModelNotFoundException $e){
             throw new ProfileNotFoundException($id);
