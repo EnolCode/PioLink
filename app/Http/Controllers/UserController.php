@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\UserNameNotFoundException;
-use App\Exceptions\UserNotFoundException;
+use App\Exceptions\ModelNotFound\UserNameNotFoundException;
+use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use Exception;

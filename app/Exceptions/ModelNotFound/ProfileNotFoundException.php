@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\ModelNotFound;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Request;

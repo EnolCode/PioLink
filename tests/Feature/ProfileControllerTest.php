@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Exceptions\ProfileNotFoundException;
+use App\Exceptions\ModelNotFound\ProfileNotFoundException;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -107,5 +107,12 @@ class ProfileControllerTest extends TestCase
         $response->assertSee("Profile with id: 2 deleted successfully");
         $reponseProfileDelete = $this->get("api/profile/id/{$this->profile2->id}");
         $reponseProfileDelete->assertStatus(404);
+    }
+
+    public function test_deleted_profile_by_id_return_exception_when_id_dont_exist(): void
+    {
+        $response = $this->delete("api/profile/5");
+        $response->assertStatus(404)->assertSee("Profile with ID 5 not found.");
+        $this->assertTrue($response->exception instanceof ProfileNotFoundException);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ProfileNotFoundException;
+use App\Exceptions\ModelNotFound\ProfileNotFoundException;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use Exception;

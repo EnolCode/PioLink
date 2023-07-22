@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Exceptions\UserNameNotFoundException;
-use App\Exceptions\UserNotFoundException;
+use App\Exceptions\ModelNotFound\UserNameNotFoundException;
+use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

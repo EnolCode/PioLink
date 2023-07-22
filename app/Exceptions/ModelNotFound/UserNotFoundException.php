@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\ModelNotFound;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserNameNotFoundException extends Exception
+class UserNotFoundException extends Exception
 {
     protected $code = 404;
-    protected $name;
+    protected $id;
     protected $message;
 
-    public function __construct(string $name)
+    public function __construct(int $id)
     {
-        $this->name = $name;
-        $this->message = 'The user: ' . $name . ' doesnt exist.';
+        $this->id = $id;
+        $this->message = 'User with ID ' . $id . ' not found.';
     }
 
     public function render(Request $request)
