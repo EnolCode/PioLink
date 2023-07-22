@@ -84,7 +84,7 @@ class ProfileControllerTest extends TestCase
         $response->assertJsonFragment($this->profile1->toArray());
     }
 
-    public function test_updated_profile_by_id():void
+    public function test_updated_profile_by_id(): void
     {
         $updateProfile = [
             "name" => "test update",
@@ -98,6 +98,14 @@ class ProfileControllerTest extends TestCase
         self::assertEquals($responseData['name'], 'test update');
         self::assertEquals($responseData['shortDescription'], 'test update');
         self::assertEquals($responseData['avatarImage'], 'image update');
+    }
 
+    public function test_deleted_profile_by_id(): void
+    {
+        $response = $this->delete("api/profile/{$this->profile2->id}");
+        $response->assertStatus(200);
+        $response->assertSee("Profile with id: 2 deleted successfully");
+        $reponseProfileDelete = $this->get("api/profile/id/{$this->profile2->id}");
+        $reponseProfileDelete->assertStatus(404);
     }
 }

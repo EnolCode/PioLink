@@ -20,4 +20,5 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('profile/{id}', [ProfileController::class, 'findProfileById']);
     Route::get('profiles', [ProfileController::class, 'findAllProfiles']);
     Route::put('profile/edit/{id}', [ProfileController::class, 'updateProfile']);
+    Route::delete('profile/{id}', [ProfileController::class, 'deleteProfile']);
 });

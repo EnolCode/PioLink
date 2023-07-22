@@ -51,18 +51,16 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Profile $profile)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Profile $profile)
+    public function deleteProfile(int $id)
     {
-        //
+        try{
+            $profile = Profile::findOrFail($id);
+            $profile->delete();
+            return response('Profile with id: '.$id.' deleted successfully', 200);
+        } catch (ModelNotFoundException $e){
+            throw new ProfileNotFoundException($id);
+        }
     }
 }
