@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('user/name/{name}', [UserController::class, 'findUserByUsername']);
     Route::get('users', [UserController::class, 'findAllUsers']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::put('user/{id}', [UserController::class, 'updatedUser']);
+    Route::patch('user/{id}', [UserController::class, 'updatedUser']);
     Route::delete('user/{id}', [UserController::class, 'deleteUser']);
     Route::get('profile/{id}', [ProfileController::class, 'findProfileById']);
     Route::get('profiles', [ProfileController::class, 'findAllProfiles']);
