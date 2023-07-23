@@ -10,9 +10,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function findPostById(int $id)
     {
-        //
+        $post = Post::findById($id);
+
     }
 
     /**
