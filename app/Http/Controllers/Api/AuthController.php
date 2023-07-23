@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -13,6 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function register(Request $request)
     {
         $request->validate([
@@ -21,11 +28,8 @@ class AuthController extends Controller
             'password'=>'required|confirmed|min:8|max:16'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password'=>Hash::make($request['password'])
-        ]);
+        $user = new User($request->all());
+        $user = $this->userRepository->save($user);
 
         Profile::create([
             'id' => $user->id,

@@ -6,49 +6,42 @@ use App\Exceptions\ModelNotFound\UserNameNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
+use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 class UserController extends Controller
 {
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function findUserById(int $id): JsonResponse
     {
-        try {
-            $user = User::findOrFail($id);
-            return response()->json($user, 200);
-        } catch (ModelNotFoundException $e) {
-            throw new UserNotFoundException($id);
-        }
+        $user = $this->userService->getById($id);
+        return response()->json($user, 200);
     }
 
     public function findUserByUsername(string $name): JsonResponse
     {
-        $user = User::where('name', $name)->first();
-        if($user){
-            return response()->json($user, 200);
-        }
-        throw new UserNameNotFoundException($name);
+        $user = $this->userService->getUserByUsername($name);
+        return response()->json($user, 200);
     }
 
-    public function findAllUsers(): JsonResponse
+    public function findAllUsers(): Collection
     {
-        try{
-           $users = User::all();
-           return response()->json($users, 200);
-        } catch (Exception $e) {
-            return abort(404);
-        }
+        return $this->userService->getAll();
     }
 
     public function updatedUser(int $id, UserUpdatedRequest $request): JsonResponse
     {
         try{
-            $user = User::findOrFail($id);
-            $user->update([
-                'name' => $request->name,
-                'email'=> $request->email
-            ]);
+            $user = $this->userRepository->update($id, $request->all());
             return response()->json($user, 200);
         } catch (ModelNotFoundException $e) {
             throw new UserNotFoundException($id);
@@ -58,8 +51,7 @@ class UserController extends Controller
     public function deleteUser(int $id)
     {
         try{
-            $user = User::findOrFail($id);
-            $user->delete();
+            $this->userRepository->delete($id);
             return response('User with id ' . $id . ' deleted successfully.', 200);
         } catch (ModelNotFoundException){
             throw new UserNotFoundException($id);
