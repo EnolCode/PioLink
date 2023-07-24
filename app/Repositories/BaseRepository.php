@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Http\Requests\ModelUpdatedRequest;
+use App\Http\Requests\UserUpdatedRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+
 
 class BaseRepository
 {
@@ -20,28 +22,25 @@ class BaseRepository
         return $this->model->get();
     }
 
-    public function getById(int $id): Model|null
+    public function getById(int $id): ?Model
     {
         return $this->model->find($id);
     }
 
-    public function save(Model $model)
+    public function save(Model $model): Model
     {
         $model->save();
         return $model;
     }
 
-    public function update(int $id, array $request): Model|null
+    public function update(Model $model, UserUpdatedRequest $request): ?Model
     {
-        $model = $this->model->findOrFail($id);
-        $model->update($request);
+        $model->update($request->all());
         return $model;
     }
 
-    public function delete(int $id): Model|null
+    public function delete(Model $model): void
     {
-        $model = $this->model->findOrFail($id);
         $model->delete();
-        return $model;
     }
 }
