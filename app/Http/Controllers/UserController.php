@@ -38,23 +38,15 @@ class UserController extends Controller
         return $this->userService->getAll();
     }
 
-    public function updatedUser(int $id, UserUpdatedRequest $request): JsonResponse
+    public function updatedUser(int $id, UserUpdatedRequest $request): User
     {
-        try{
-            $user = $this->userRepository->update($id, $request->all());
-            return response()->json($user, 200);
-        } catch (ModelNotFoundException $e) {
-            throw new UserNotFoundException($id);
-        }
+        return $this->userService->updatedUser($id,$request);
     }
 
     public function deleteUser(int $id)
     {
-        try{
-            $this->userRepository->delete($id);
-            return response('User with id ' . $id . ' deleted successfully.', 200);
-        } catch (ModelNotFoundException){
-            throw new UserNotFoundException($id);
-        }
+        $this->userService->deleteUser($id);
+        return 'User with id '.$id .' deleted successfully.';
+
     }
 }

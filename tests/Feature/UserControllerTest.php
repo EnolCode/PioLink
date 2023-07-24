@@ -81,7 +81,7 @@ class UserControllerTest extends TestCase
            "name" => "test1 updated",
            "email" =>"updatedEmail@gmail.com"
         ];
-        $response = $this->put("/api/user/{$this->user1->id}", $updateUser);
+        $response = $this->patch("/api/user/{$this->user1->id}", $updateUser);
         $response->assertStatus(200);
         self::assertEquals($response['name'], 'test1 updated');
         self::assertEquals($response['email'], 'updatedEmail@gmail.com');
