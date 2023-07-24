@@ -43,10 +43,9 @@ class UserController extends Controller
         return $this->userService->updatedUser($id,$request);
     }
 
-    public function deleteUser(int $id)
+    public function deleteUser(int $id): JsonResponse
     {
         $this->userService->deleteUser($id);
-        return 'User with id '.$id .' deleted successfully.';
-
+        return response()->json(['message' =>'User with id '.$id .' deleted successfully.'], 200);
     }
 }
