@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\ModelNotFound\UserNameNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
+use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,7 +24,7 @@ class UserService
         return $this->userRepository->all();
     }
 
-    public function getById(int $id): User
+    public function getById(int $id): User|null
     {
         $user = $this->userRepository->getById($id);
         if ($user) {
@@ -40,6 +41,27 @@ class UserService
             return $user;
         } else {
             throw new UserNameNotFoundException($name);
+        }
+    }
+
+    public function updatedUser(int $id, UserUpdatedRequest $request): ?User
+    {
+        $user = $this->userRepository->getById($id);
+        if ($user) {
+            $user = $this->userRepository->update($user, $request);
+            return $user;
+        } else {
+            throw new UserNotFoundException($id);
+        }
+    }
+
+    public function deleteUser(int $id): void
+    {
+        $user = $this->userRepository->getById($id);
+        if ($user) {
+            $this->userRepository->delete($user);
+        } else {
+            throw new UserNotFoundException($id);
         }
     }
 }
