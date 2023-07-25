@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository
 {
-    private $model;
+    protected $model;
     private $relations;
     public function __construct(Model $model, array $relations = [])
     {
