@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Exceptions\ModelNotFound\UserNameNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,6 +16,7 @@ class UserControllerTest extends TestCase
     use RefreshDatabase;
     protected $user1;
     protected $user2;
+    protected $profile1;
 
     public function setUp(): void
     {
@@ -29,6 +31,13 @@ class UserControllerTest extends TestCase
             'name' => 'test2',
             'email' => 'userTest2@gmail.com',
             'password' => bcrypt('hola')
+        ]);
+        /**
+         *  Profile $profile1
+         */
+        $this->profile1 = Profile::create([
+            'id' => $this->user1->id,
+            'user_id' => $this->user1->id
         ]);
 
         $this->actingAs($this->user1);
@@ -87,12 +96,14 @@ class UserControllerTest extends TestCase
         self::assertEquals($response['email'], 'updatedEmail@gmail.com');
     }
 
-    public function test_delete_user(): void
+    public function test_delete_user_and_profile_delete(): void
     {
         $response = $this->delete("api/user/{$this->user1->id}");
         $response->assertStatus(200);
         self::assertEquals($response['message'], 'User with id '. $this->user1->id .' deleted successfully.');
         $reponseUserDelete = $this->get("api/user/id/{$this->user1->id}");
         $reponseUserDelete->assertStatus(404);
+        $reponseProfileDelete = $this->get("api/profile/{$this->user1->id}");
+        $reponseProfileDelete->assertStatus(404);
     }
 }
