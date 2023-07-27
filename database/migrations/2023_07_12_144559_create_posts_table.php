@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('content',255)->required();
+            $table->string('file')->nullable();
+            $table->unsignedBigInteger('profile_id');
         });
     }
 

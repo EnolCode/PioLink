@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name',20)->nullable()->default(null);
             $table->string('lastName',45)->nullable()->default(null);
             $table->string('location', 80)->nullable()->default(null);
-            $table->integer('age')->nullable()->default(null);
+            $table->date('birthday')->nullable()->default(null);
             $table->boolean("isBanned")->required()->default(false);
             $table->string("longDescription", 255)->nullable();
             $table->string("shortDescription", 75)->nullable();
