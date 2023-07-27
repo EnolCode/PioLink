@@ -6,7 +6,7 @@ use App\Http\Requests\ModelUpdatedRequest;
 use App\Http\Requests\UserUpdatedRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Http\Client\Request;
 
 class BaseRepository
 {
@@ -43,7 +43,7 @@ class BaseRepository
         return $model;
     }
 
-    public function update(Model $model, UserUpdatedRequest $request): ?Model
+    public function update(Model $model, $request): ?Model
     {
         $model->update($request->all());
         return $model;

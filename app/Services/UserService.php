@@ -48,8 +48,7 @@ class UserService
     {
         $user = $this->userRepository->getById($id);
         if ($user) {
-            $user = $this->userRepository->update($user, $request);
-            return $user;
+            return $this->userRepository->update($user, $request);
         } else {
             throw new UserNotFoundException($id);
         }

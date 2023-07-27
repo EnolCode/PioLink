@@ -92,7 +92,7 @@ class ProfileControllerTest extends TestCase
             "avatarImage" => "image update"
         ];
 
-        $response = $this->put("/api/profile/edit/{$this->profile1->id}", $updateProfile);
+        $response = $this->patch("/api/profile/edit/{$this->profile1->id}", $updateProfile);
         $response->assertStatus(200);
         $responseData = $response->json('profile');
         self::assertEquals($responseData['name'], 'test update');

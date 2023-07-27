@@ -5,49 +5,41 @@ namespace App\Http\Controllers;
 use App\Exceptions\ModelNotFound\ProfileNotFoundException;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
+use App\Services\ProfileService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function findProfileById(int $id): JsonResponse
+
+    private $profileService;
+
+    public function __construct(ProfileService $profileService)
     {
-        try {
-            $profile = Profile::findOrFail($id);
-            return response()->json($profile, 200);
-        } catch (ModelNotFoundException $e) {
-            throw new ProfileNotFoundException($id);
-        }
+        $this->profileService = $profileService;
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function findAllProfiles(): JsonResponse
+    public function findProfileById(int $id): JsonResponse
     {
-        try{
-            $profiles = Profile::all();
-            return response()->json($profiles, 200);
-        } catch(Exception $e) {
-            return abort(404);
-        }
+        $profile =  $this->profileService->getById($id);
+        return response()->json($profile, 200);
+    }
+
+    public function findAllProfiles(): Collection
+    {
+        return $this->profileService->getAll();
     }
 
     public function updateProfile(int $id, ProfileUpdateRequest $request): JsonResponse
     {
-        try{
-            $profile = Profile::findOrFail($id);
-            $profile->update($request->all());
-            return response()->json(['profile' => $profile, 'message' => 'Profile updated successfully'], 200);
-        } catch (ModelNotFoundException $e){
-            throw new ProfileNotFoundException($id);
-        }
+        $profile = $this->profileService->updateProfile($id, $request);
+        return response()->json(['profile' => $profile, 'message' => 'Profile updated successfully'], 200);
     }
 
     /**
