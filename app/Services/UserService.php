@@ -7,11 +7,12 @@ use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
-class UserService
+class UserService implements BaseService
 {
     protected $userRepository;
     public function __construct(UserRepository $userRepository)
@@ -54,7 +55,7 @@ class UserService
         }
     }
 
-    public function deleteUser(int $id): void
+    public function delete(int $id): void
     {
         $user = $this->userRepository->getById($id);
         if ($user) {

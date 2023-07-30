@@ -6,9 +6,10 @@ use App\Exceptions\ModelNotFound\ProfileNotFoundException;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use App\Repositories\ProfileRepository;
+use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Collection;
 
-class ProfileService
+class ProfileService implements BaseService
 {
     protected $profileRepository;
 
@@ -32,7 +33,7 @@ class ProfileService
         }
     }
 
-    public function updateProfile(int $id, ProfileUpdateRequest $request): ?Profile
+    public function update(int $id, ProfileUpdateRequest $request): ?Profile
     {
         $profile = $this->profileRepository->getById($id);
         if($profile) {
@@ -42,7 +43,7 @@ class ProfileService
         }
     }
 
-    public function deleteProfile(int $id): void
+    public function delete(int $id): void
     {
         $profile = $this->profileRepository->getById($id);
         if($profile){
