@@ -14,7 +14,7 @@ class PostController extends Controller
 
     protected $postService;
 
-    public function __contruct(PostService $postService)
+    public function __construct(PostService $postService)
     {
         $this->postService = $postService;
     }
@@ -30,13 +30,15 @@ class PostController extends Controller
         return $this->postService->getAll();
     }
 
-    public function updatePost(int $id, PostUpdateRequest $request): Post
+    public function update(int $id, PostUpdateRequest $request): JsonResponse
     {
-        return $this->postService->update($id, $request);
+        $post = $this->postService->update($id, $request);
+        return response()->json($post, 200);
     }
 
     public function delete(int $id): JsonResponse
     {
-        $user =
+        $this->postService->delete($id);
+        return response()->json(['message' => 'Post with id '.$id. ' deleted successfully.']);
     }
 }
