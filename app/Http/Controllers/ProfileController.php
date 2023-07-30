@@ -36,23 +36,15 @@ class ProfileController extends Controller
         return $this->profileService->getAll();
     }
 
-    public function updateProfile(int $id, ProfileUpdateRequest $request): JsonResponse
+    public function update(int $id, ProfileUpdateRequest $request): JsonResponse
     {
-        $profile = $this->profileService->updateProfile($id, $request);
-        return response()->json(['profile' => $profile, 'message' => 'Profile updated successfully'], 200);
+        $profile = $this->profileService->update($id, $request);
+        return response()->json($profile, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function deleteProfile(int $id)
+    public function delete(int $id)
     {
-        try{
-            $profile = Profile::findOrFail($id);
-            $profile->delete();
-            return response('Profile with id: '.$id.' deleted successfully', 200);
-        } catch (ModelNotFoundException $e){
-            throw new ProfileNotFoundException($id);
-        }
+        $this->profileService->delete($id);
+        return response()->json(['message' =>'Profile with id '.$id .' deleted successfully.'], 200);
     }
 }

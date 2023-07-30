@@ -45,7 +45,7 @@ class UserService implements BaseService
         }
     }
 
-    public function updatedUser(int $id, UserUpdatedRequest $request): ?User
+    public function update(int $id, UserUpdatedRequest $request): ?User
     {
         $user = $this->userRepository->getById($id);
         if ($user) {

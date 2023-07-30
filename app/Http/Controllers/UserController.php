@@ -38,14 +38,16 @@ class UserController extends Controller
         return $this->userService->getAll();
     }
 
-    public function updatedUser(int $id, UserUpdatedRequest $request): User
+    public function updatedUser(int $id, UserUpdatedRequest $request): JsonResponse
     {
-        return $this->userService->updatedUser($id,$request);
+        $user = $this->userService->update($id, $request);
+        return response()->json($user, 200);
+
     }
 
     public function deleteUser(int $id): JsonResponse
     {
-        $this->userService->deleteUser($id);
+        $this->userService->delete($id);
         return response()->json(['message' =>'User with id '.$id .' deleted successfully.'], 200);
     }
 }

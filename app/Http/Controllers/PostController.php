@@ -2,65 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
+use App\Services\PostService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function findPostById(int $id)
-    {
-        $post = Post::findById($id);
 
+    protected $postService;
+
+    public function __contruct(PostService $postService)
+    {
+        $this->postService = $postService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function findPostById(int $id): JsonResponse
     {
-        //
+        $post = $this->postService->getById($id);
+        return response()->json($post, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getAll(): Collection
     {
-        //
+        return $this->postService->getAll();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
+    public function updatePost(int $id, PostUpdateRequest $request): Post
     {
-        //
+        return $this->postService->update($id, $request);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
+    public function delete(int $id): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
+        $user =
     }
 }

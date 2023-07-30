@@ -92,20 +92,19 @@ class ProfileControllerTest extends TestCase
             "avatarImage" => "image update"
         ];
 
-        $response = $this->patch("/api/profile/edit/{$this->profile1->id}", $updateProfile);
+        $response = $this->patch("/api/profile/{$this->profile1->id}", $updateProfile);
         $response->assertStatus(200);
-        $responseData = $response->json('profile');
-        self::assertEquals($responseData['name'], 'test update');
-        self::assertEquals($responseData['shortDescription'], 'test update');
-        self::assertEquals($responseData['avatarImage'], 'image update');
+        self::assertEquals($response['name'], 'test update');
+        self::assertEquals($response['shortDescription'], 'test update');
+        self::assertEquals($response['avatarImage'], 'image update');
     }
 
     public function test_deleted_profile_by_id(): void
     {
         $response = $this->delete("api/profile/{$this->profile2->id}");
         $response->assertStatus(200);
-        $response->assertSee("Profile with id: 2 deleted successfully");
-        $reponseProfileDelete = $this->get("api/profile/id/{$this->profile2->id}");
+        self::assertEquals($response['message'], 'Profile with id '. $this->profile2->id .' deleted successfully.');
+        $reponseProfileDelete = $this->get("api/psrofile/id/{$this->profile2->id}");
         $reponseProfileDelete->assertStatus(404);
     }
 

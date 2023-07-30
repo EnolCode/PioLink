@@ -47,7 +47,7 @@ class ProfileService implements BaseService
     {
         $profile = $this->profileRepository->getById($id);
         if($profile){
-            $this->profileRepository->delete($profile->id);
+            $this->profileRepository->delete($profile);
         } else{
             throw new ProfileNotFoundException($id);
         }
