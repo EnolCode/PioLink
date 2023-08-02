@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Exceptions\ModelNotFound\UserNameNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
