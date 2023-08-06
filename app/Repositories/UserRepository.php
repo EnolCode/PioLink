@@ -17,10 +17,6 @@ class UserRepository extends BaseRepository
         parent::__construct($user, self::RELATIONS);
     }
 
-    public function findUserByUsername(string $name): User|null
-    {
-        return User::where('name', $name)->first();
-    }
 
     public function delete(Model $model): void
     {

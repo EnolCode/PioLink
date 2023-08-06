@@ -25,7 +25,6 @@ class UserUpdatedRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'min:4|max:25',
             'email' => 'email|unique:users'
         ];
     }

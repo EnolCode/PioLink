@@ -27,12 +27,6 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function findUserByUsername(string $name): JsonResponse
-    {
-        $user = $this->userService->getUserByUsername($name);
-        return response()->json($user, 200);
-    }
-
     public function findAllUsers(): Collection
     {
         return $this->userService->getAll();
