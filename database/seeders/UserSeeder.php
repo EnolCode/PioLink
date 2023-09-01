@@ -21,6 +21,8 @@ class UserSeeder extends Seeder
 
         Profile::create([
             'id' => $userAdmin->id,
+            'name' => 'Enol',
+            'lastName' => 'Igareta',
             'user_id'=>$userAdmin->id
         ]);
 
@@ -31,6 +33,8 @@ class UserSeeder extends Seeder
 
         Profile::create([
             'id' => $userDefault->id,
+            'name' => 'User',
+            'lastName' => 'lastName',
             'user_id'=>$userDefault->id
         ]);
 

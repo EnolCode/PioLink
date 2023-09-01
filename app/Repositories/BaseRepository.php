@@ -37,8 +37,9 @@ class BaseRepository
         return $query->find($id);
     }
 
-    public function save(Model $model): Model
+    public function save($request): ?Model
     {
+        $model = $this->model->fill($request->all());
         $model->save();
         return $model;
     }

@@ -25,7 +25,7 @@ class PostUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|max:255|string',
+            'content' => 'required|max:255|string|min:3',
             'file' => 'nullable'
         ];
     }

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostUpdateRequest;
-use App\Models\Post;
+use App\Http\Resources\PostResource;
 use App\Services\PostService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PostController extends Controller
 {
@@ -22,18 +22,25 @@ class PostController extends Controller
     public function findPostById(int $id): JsonResponse
     {
         $post = $this->postService->getById($id);
-        return response()->json($post, 200);
+        return response()->json(new PostResource($post), 200);
     }
 
-    public function getAll(): Collection
+    public function getAll(): AnonymousResourceCollection
     {
-        return $this->postService->getAll();
+        $posts = $this->postService->getAll();
+        return PostResource::collection($posts);
     }
 
     public function update(int $id, PostUpdateRequest $request): JsonResponse
     {
         $post = $this->postService->update($id, $request);
         return response()->json($post, 200);
+    }
+
+    public function save(PostUpdateRequest $request): JsonResponse
+    {
+        $post = $this->postService->save($request);
+        return response()->json($post, 201);
     }
 
     public function delete(int $id): JsonResponse

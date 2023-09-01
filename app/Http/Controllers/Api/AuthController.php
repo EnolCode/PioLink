@@ -23,9 +23,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            // 'name' => 'string|min:4|max:15',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|confirmed|min:8|max:16'
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:8|max:16'
         ]);
 
         $user = new User($request->all());
@@ -33,7 +32,7 @@ class AuthController extends Controller
 
         Profile::create([
             'id' => $user->id,
-            'user_id'=>$user->id
+            'user_id' => $user->id
         ]);
 
         return response()->json([
@@ -44,16 +43,24 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email'=> ['required', 'email'],
-            'password'=> ['required']
+            'email' => ['required', 'email'],
+            'password' => ['required']
         ]);
 
-        if(Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $roles = $user->roles->pluck('name');
             $token = $user->createToken('token')->plainTextToken;
             $cookie = cookie('cookie_token', $token, 60 * 24);
-            return response(["token" => $token], Response::HTTP_OK)->withCookie($cookie);
-        }else{
+            return response([
+                "token" => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'roles' => $roles
+                ],
+            ], Response::HTTP_OK)->withCookie($cookie);
+        } else {
             return response()->json([
                 'message' => 'Creedentials invalids'
             ], 401);
@@ -73,7 +80,6 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
         return response()->json([
             'message' => 'Logout succesfully'
-        ],200)->withCookie($cookie);
+        ], 200)->withCookie($cookie);
     }
-
 }
