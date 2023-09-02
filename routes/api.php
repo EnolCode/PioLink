@@ -30,4 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::patch('post/{id}', [PostController::class, 'update']);
     Route::post('posts', [PostController::class, 'save']);
     Route::delete('post/{id}', [PostController::class, 'delete']);
+    // FILE STORAGE
+    Route::post('upload-avatar', [ProfileController::class, 'uploadAvatarImage']);
+
 });

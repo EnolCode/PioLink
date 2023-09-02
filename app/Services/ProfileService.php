@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Exceptions\ModelNotFound\ProfileNotFoundException;
+use App\Http\Requests\AvatarImageRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use App\Repositories\ProfileRepository;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileService implements BaseService
 {
@@ -51,5 +53,13 @@ class ProfileService implements BaseService
         } else{
             throw new ProfileNotFoundException($id);
         }
+    }
+
+    public function storeAvatarImage(AvatarImageRequest $request)
+    {
+        $fileName = time().'.'.$request->avatarImage->extension();
+        $request->avatarImage->move(public_path('avatars'), $fileName);
+        $profile = $this->profileRepository->uploadAvatarImage(Auth::user()->profile, $fileName);
+        return $profile->avatarImage;
     }
 }

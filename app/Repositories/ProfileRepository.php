@@ -11,4 +11,11 @@ class ProfileRepository extends BaseRepository
     {
         parent::__construct($profile);
     }
+
+    public function uploadAvatarImage(Profile $profile, string $fileName): Profile
+    {
+        $profile->avatarImage = $fileName;
+        $profile->save();
+        return $profile;
+    }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ModelNotFound\ProfileNotFoundException;
+use App\Http\Requests\AvatarImageRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Profile;
 use App\Services\ProfileService;
+use Error;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -46,5 +48,11 @@ class ProfileController extends Controller
     {
         $this->profileService->delete($id);
         return response()->json(['message' =>'Profile with id '.$id .' deleted successfully.'], 200);
+    }
+
+    public function uploadAvatarImage(AvatarImageRequest $request): JsonResponse
+    {
+            $profile = $this->profileService->storeAvatarImage($request);
+            return response()->json($profile, 201);
     }
 }
