@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Exceptions\ModelNotFound;
-
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserNameNotFoundException extends Exception
+class EmailNotFoundException extends Exception
 {
     protected $code = 404;
-    protected $name;
+    protected $email;
     protected $message;
 
-    public function __construct(string $name)
+    public function __construct(string $email)
     {
-        $this->name = $name;
-        $this->message = 'The user: ' . $name . ' doesnt exist.';
+        $this->email = $email;
+        $this->message = 'The user with email: ' . $email . ' doesnt exist.';
     }
 
     public function render(Request $request)

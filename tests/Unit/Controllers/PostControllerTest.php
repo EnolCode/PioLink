@@ -43,15 +43,17 @@ class PostControllerTest extends TestCase
         ]);
 
         $this->post1 = Post::create([
+            'id' => 1,
             'content' => 'Mucho post hay loquin',
             'file' => 'Pues una foto cualquiera',
             'profile_id' => $this->profile1->id,
         ]);
 
         $this->post2 = Post::create([
+            'id' => 2,
             'content' => 'Mucho post hay loquin 2',
             'file' => 'Pues una foto cualquiera 2',
-            'profile_id' => 1,
+            'profile_id' => $this->profile1->id,
         ]);
 
         $this->actingAs($this->user1);
@@ -77,7 +79,7 @@ class PostControllerTest extends TestCase
         $response = $this->get("/api/posts");
         $response->assertStatus(200);
         $responseData = $response->json();
-        self::assertCount(2,$responseData);
+        self::assertCount(2,$responseData['data']);
         $response->assertJsonFragment($this->post2->toArray());
         $response->assertJsonFragment($this->post1->toArray());
     }

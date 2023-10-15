@@ -20,6 +20,7 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'file' => $this->file,
             'date' => $this->created_at,
+            'profile_id' => $this->profile_id,
         ];
     }
 }

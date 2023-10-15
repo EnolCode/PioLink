@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Exceptions\ModelNotFound\UserNameNotFoundException;
+use App\Exceptions\ModelNotFound\EmailNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Models\Profile;
 use App\Models\User;
@@ -22,13 +22,11 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
         $this->user1 = User::create([
-            'name' => 'test',
-            'email' => 'userTest' . time() . '@gmail.com',
+            'email' => 'userTest@gmail.com',
             'password' => bcrypt('hola')
         ]);
 
         $this->user2 = User::create([
-            'name' => 'test2',
             'email' => 'userTest2@gmail.com',
             'password' => bcrypt('hola')
         ]);
@@ -49,7 +47,7 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson($this->user1->toArray());
-        self::assertEquals($response['name'], 'test');
+        self::assertEquals($response['email'], 'userTest@gmail.com');
     }
 
     public function test_find_user_for_id_fail_return_exception(): void
@@ -61,17 +59,16 @@ class UserControllerTest extends TestCase
 
     public function test_find_user_by_name(): void
     {
-        $response = $this->get("/api/user/name/{$this->user2->name}");
+        $response = $this->get("/api/user/email/{$this->user2->email}");
         $response->assertStatus(200);
-        self::assertEquals($response['name'], 'test2');
         self::assertEquals($response['email'], 'userTest2@gmail.com');
     }
 
     public function test_find_user_for_name_fail_return_exception(): void
     {
-        $reponse = $this->get("/api/user/name/pacopaquito");
-        $reponse->assertStatus(404)->assertSee('The user: pacopaquito doesnt exist.');
-        $this->assertTrue($reponse->exception instanceof UserNameNotFoundException);
+        $reponse = $this->get("/api/user/email/pacopaquito@fake.com");
+        $reponse->assertStatus(404)->assertSee('The user with email: pacopaquito@fake.com doesnt exist.');
+        $this->assertTrue($reponse->exception instanceof EmailNotFoundException);
     }
 
     public function test_findAll_users(): void
@@ -87,12 +84,10 @@ class UserControllerTest extends TestCase
     public function test_update_user(): void
     {
         $updateUser = [
-           "name" => "test1 updated",
            "email" =>"updatedEmail@gmail.com"
         ];
         $response = $this->patch("/api/user/{$this->user1->id}", $updateUser);
         $response->assertStatus(200);
-        self::assertEquals($response['name'], 'test1 updated');
         self::assertEquals($response['email'], 'updatedEmail@gmail.com');
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\ModelNotFound\UserNameNotFoundException;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,5 +23,11 @@ class UserRepository extends BaseRepository
     {
         $model->profile->delete();
         $model->delete();
+    }
+
+    public function findUserByEmail(string $email)
+    {
+        $user = User::where('email', $email)->first();
+        return $user;
     }
 }

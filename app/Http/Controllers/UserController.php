@@ -44,4 +44,10 @@ class UserController extends Controller
         $this->userService->delete($id);
         return response()->json(['message' =>'User with id '.$id .' deleted successfully.'], 200);
     }
+
+    public function findUserByEmail(string $email): JsonResponse
+    {
+        $user = $this->userService->getUserByEmail($email);
+        return response()->json($user, 200);
+    }
 }

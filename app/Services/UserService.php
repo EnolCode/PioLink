@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\ModelNotFound\UserNameNotFoundException;
+use App\Exceptions\ModelNotFound\EmailNotFoundException;
 use App\Exceptions\ModelNotFound\UserNotFoundException;
 use App\Http\Requests\UserUpdatedRequest;
 use App\Models\User;
@@ -35,13 +35,13 @@ class UserService implements BaseService
         }
     }
 
-    public function getUserByUsername(string $name): User
+    public function getUserByEmail(string $email): User
     {
-        $user = $this->userRepository->findUserByUsername($name);
+        $user = $this->userRepository->findUserByEmail($email);
         if($user){
             return $user;
         } else {
-            throw new UserNameNotFoundException($name);
+            throw new EmailNotFoundException($email);
         }
     }
 
